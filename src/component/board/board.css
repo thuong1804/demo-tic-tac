@@ -1,14 +1,19 @@
-.board-row{
-    display: flex;
+.board-row {
+    display: grid;
+    grid-template-columns: 72px 73px 66px;
     justify-content: center;
+
 }
-.status{
+
+.status {
     font-size: 30px;
     text-align: center;
-    padding-bottom:20px
+    padding-bottom: 20px
 }
-.reset-game{
+
+.reset-game {
     display: flex;
     justify-content: center;
     margin-top: 30px;
+
 }
