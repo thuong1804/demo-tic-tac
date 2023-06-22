@@ -77,7 +77,7 @@ function Board() {
   //   setSquares([...result])
 
   // }
-  console.log(returnHistory)
+  
 
   function handleClick(i) {
     if (calculateWinner(squares) || squares[i]) {
