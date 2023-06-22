@@ -13,28 +13,30 @@ function Board() {
   const [squares, setSquares] = useState(Array(9).fill(null));
   const [inext, setInext] = useState(true);
   const [result, setResult] = useState([]);
-  const [current,setCurrent] = useState(0);
+  const ret = result[result.length];
 
   const winner = calculateWinner(squares);
 
   let status;
 
-  function checkwinner() {
-  
-    if( winner) {
-      status = "winner" + winner;
-     
-    }
+  function checkwinner(i) {
 
+    if (winner) {
+      status = "winner" + winner;
+
+    }
     else {
       status = "next player " + (inext ? " X " : " O ");
     }
-    useEffect(()=>{
-      
-      if(winner)
-      saveHistory();
-     
-    },[winner])
+    useEffect(() => {
+
+      if (winner) {
+        saveHistory();
+      }
+
+
+
+    }, [winner])
   }
 
 
@@ -64,12 +66,18 @@ function Board() {
   }
 
   const saveHistory = () => {
-    
+
     setResult([...result, `the winner is ${winner}`])
-    
+    console.log()
   }
+  console.log(saveHistory)
 
+  // function returnHistory() {
+   
+  //   setSquares([...result])
 
+  // }
+  console.log(returnHistory)
 
   function handleClick(i) {
     if (calculateWinner(squares) || squares[i]) {
@@ -94,11 +102,11 @@ function Board() {
 
   function handelReset() {
     setSquares(Array(9).fill(null));
-   
+
   }
 
   // function jumpto(nextmore){
-   
+
   //   setCurrent(nextmore)
   // }
 
