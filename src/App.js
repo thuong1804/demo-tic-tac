@@ -1,5 +1,4 @@
-import logo from './logo.svg';
-import './App.css';
+
 import Board from './component/board';
 import React from 'react';
 

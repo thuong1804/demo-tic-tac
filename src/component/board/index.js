@@ -3,42 +3,33 @@ import Square from "../square";
 import "./board.css";
 
 function Board() {
-
-
-
-
-
-
-
   const [squares, setSquares] = useState(Array(9).fill(null));
   const [inext, setInext] = useState(true);
   const [result, setResult] = useState([]);
-  const ret = result[result.length];
+  // const winner = calculateWinner(squares);
+  const [winner, setWinner] = useState('');
 
-  const winner = calculateWinner(squares);
+  
 
-  let status;
-
-  function checkwinner(i) {
-
+  function checkwinner() {
+    let status;
+    const winner = calculateWinner(squares)
     if (winner) {
       status = "winner" + winner;
-
     }
     else {
       status = "next player " + (inext ? " X " : " O ");
     }
-    useEffect(() => {
 
-      if (winner) {
-        saveHistory();
-      }
-
-
-
-    }, [winner])
+    return status;
   }
-
+  
+  useEffect(() => {
+    if (winner) {
+      saveHistory();
+      setWinner(winner)
+    }
+  }, [winner])
 
   function calculateWinner(squares) {
     const lines = [
@@ -66,23 +57,22 @@ function Board() {
   }
 
   const saveHistory = () => {
-
-    setResult([...result, `the winner is ${winner}`])
-    console.log()
+    setResult(prev => [...prev, {
+      winner,
+      result: squares,
+    }])
   }
-  console.log(saveHistory)
 
-  // function returnHistory() {
-   
-  //   setSquares([...result])
-
-  // }
-  
+  const loadResult = (index) => {
+    const resultSelected = result[index];
+    setSquares(resultSelected.result);
+  }
 
   function handleClick(i) {
-    if (calculateWinner(squares) || squares[i]) {
 
+    if (calculateWinner(squares) || squares[i]) {
       return;
+
     }
     const nextSquares = squares.slice();
     if (inext) {
@@ -92,53 +82,36 @@ function Board() {
     }
 
     setSquares(nextSquares);
-    console.log(nextSquares)
-    // saveHistory();
-
     setInext(!inext);
   }
 
-
-
   function handelReset() {
     setSquares(Array(9).fill(null));
-
+    // setWinner('')
   }
 
-  // function jumpto(nextmore){
-
-  //   setCurrent(nextmore)
-  // }
+  console.log({ result });
 
   return (
-
     <div>
-      <div className={checkwinner()} style={{ textAlign: 'center', fontSize: '30px', paddingBottom: '30px' }}>{status}</div>
+      <div style={{ textAlign: 'center', fontSize: '30px', paddingBottom: '30px' }}>{checkwinner()}</div>
       <div>
 
         <div className="board-row">
           {squares.map((squa, index) => (
-
             <Square key={index} value={squa} onSquareClick={() => handleClick(index)} />
-
-
           ))}
-
-
         </div>
-
       </div>
       <div className="reset-game">
         <button onClick={handelReset} className="btn-reset">Reset Game</button>
       </div>
       <ol>
-        {result.map((sq, index) => (<li key={index}>
-          <button >{sq}</button>
+        {result.map((sq, index) =>
+        (<li key={index}>
+          <button onClick={() => loadResult(index)}>Winner: {sq.winner}</button>
         </li>))}
       </ol>
-
-
-
     </div>
   );
 }
